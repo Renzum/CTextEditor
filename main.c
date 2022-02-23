@@ -5,6 +5,8 @@
 #include <ctype.h>
 #include <errno.h>
 
+#define CTRL_KEY(k) ((k) & 0x1f)
+
 static struct termios orig_termios;
 
 void terminate(const char* str) {
@@ -50,7 +52,7 @@ int main() {
             printf("%d ('%c')\r\n", c, c);
         }
 
-        if(c == 'q')
+        if(c == CTRL_KEY('q'))
             exit(0);
 
     }
