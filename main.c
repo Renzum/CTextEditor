@@ -10,6 +10,9 @@
 static struct termios orig_termios;
 
 void terminate(const char* str) {
+    write(STDOUT_FILENO, "\x1b[2J", 4);
+    write(STDOUT_FILENO, "\x1b[H", 4);
+    
     perror(str);
     exit(1);
 }
@@ -48,6 +51,11 @@ char editorReadKey() {
     return c;
 }
 
+void editorRefreshScreen() {
+    write(STDOUT_FILENO, "\x1b[2J", 4);
+    write(STDOUT_FILENO, "\x1b[H", 3);
+}
+
 void editorProcessKeypress() {
     char c = editorReadKey();
 
@@ -62,6 +70,7 @@ int main() {
     enableRawMode();
 
     while (1) {
+        editorRefreshScreen();
         editorProcessKeypress();
     }
 
